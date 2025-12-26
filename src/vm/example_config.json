@@ -1,0 +1,7 @@
+{
+  "name": "ubuntu_vm",
+  "cpu": 2,
+  "ram": 2048,
+  "disk": 20,
+  "iso": "C:\\Users\\farou\\OneDrive\\Documents\\Cloud computing\\ISO images\\ubuntu-20.04.6-desktop-amd64.iso"
+}

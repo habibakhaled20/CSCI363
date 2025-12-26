@@ -1,0 +1,43 @@
+import subprocess
+import json
+import os
+
+def create_vm_from_config(config_file):
+    print("\n===== Create VM from Config File =====")
+
+    if not os.path.exists(config_file):
+        print("Error: config file does not exist.")
+        return
+
+    with open(config_file, "r") as file:
+        config = json.load(file)
+
+    name = config["name"]
+    cpu = config["cpu"]
+    ram = config["ram"]
+    disk = config["disk"]
+    iso_path = config["iso"]
+
+    if not os.path.exists(iso_path):
+        print("Error: ISO file not found.")
+        return
+
+    disk_file = f"{name}.qcow2"
+
+    print("\nCreating virtual disk...")
+    subprocess.run(["qemu-img", "create", "-f", "qcow2", disk_file, f"{disk}G"])
+
+    print("\nStarting VM...")
+    subprocess.run([
+        "qemu-system-x86_64",
+        "-name", name,
+        "-m", str(ram),
+        "-smp", str(cpu),
+        "-drive", f"file={disk_file},format=qcow2",
+        "-cdrom", iso_path,
+        "-boot", "d"
+    ])
+
+if __name__ == "__main__":
+    file_name = input("Enter config file path: ")
+    create_vm_from_config(file_name)
