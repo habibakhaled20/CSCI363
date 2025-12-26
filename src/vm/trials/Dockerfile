@@ -9,3 +9,4 @@ RUN pip install flask
 EXPOSE 5000
 
 CMD ["python", "app.py"]
+# v2 - force rebuild
