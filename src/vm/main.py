@@ -1,7 +1,21 @@
 # src/vm/main.py
-from vm import create_vm          # Simple relative import
-from docker import *              # or from docker import function names
+# main.py - top lines
+# main.py
+# main.py - Updated with graceful exit on Ctrl+C
+
+from vm import create_vm
+from docker import (
+    create_dockerfile,
+    build_docker_image,
+    list_docker_images,
+    list_running_containers,
+    stop_container,
+    search_local_image,
+    search_dockerhub,
+    pull_image
+)
 import sys
+
 def main():
     print("=" * 50)
     print("     CLOUD MANAGEMENT SYSTEM")
@@ -19,23 +33,39 @@ def main():
         print("9. Pull Docker Image")
         print("0. Exit")
 
-        choice = input("\nEnter choice: ").strip()
+        try:
+            choice = input("\nEnter choice: ").strip()
+        except KeyboardInterrupt:
+            print("\n\nGoodbye!")
+            sys.exit(0)
 
-        if choice == "1": create_vm()
-        elif choice == "2": create_dockerfile()
-        elif choice == "3": build_docker_image()
-        elif choice == "4": list_docker_images()
-        elif choice == "5": list_running_containers()
-        elif choice == "6": stop_container()
-        elif choice == "7": search_local_image()
-        elif choice == "8": search_dockerhub()
-        elif choice == "9": pull_image()
+        if choice == "1":
+            create_vm()
+        elif choice == "2":
+            create_dockerfile()
+        elif choice == "3":
+            build_docker_image()
+        elif choice == "4":
+            list_docker_images()
+        elif choice == "5":
+            list_running_containers()
+        elif choice == "6":
+            stop_container()
+        elif choice == "7":
+            search_local_image()
+        elif choice == "8":
+            search_dockerhub()
+        elif choice == "9":
+            pull_image()
         elif choice == "0":
             print("Goodbye!")
             sys.exit(0)
         else:
             print("Invalid choice!")
 
-
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\nGoodbye!")
+        sys.exit(0)

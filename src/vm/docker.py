@@ -1,5 +1,7 @@
 # src/vm/docker_manager.py
 # docker.py - FINAL FIXED VERSION
+# docker.py - FINAL FIXED VERSION (with reliable output capture)
+
 import subprocess
 import os
 
@@ -70,39 +72,50 @@ def build_docker_image():
 
 def list_docker_images():
     print("\n===== Docker Images =====")
-    output = subprocess.run("docker images", shell=True, capture_output=True, text=True)
-    print(output.stdout)
-    if output.stderr:
-        print("Error:", output.stderr)
-    print("")
+    output = run_command("docker images")
+    print(output)
 
-    
 def list_running_containers():
     print("\n===== Running Containers =====")
-    os.system("docker ps")
+    output = run_command("docker ps")
+    print(output)
 
 def stop_container():
     print("\n===== Stop Container =====")
     container = input("Enter container ID or name: ").strip()
     if container:
-        os.system(f"docker stop {container}")
+        output = run_command(f"docker stop {container}")
+        print(output)
     else:
         print("No container specified.")
 
 def search_local_image():
     print("\n===== Search Local Images =====")
     query = input("Enter search term: ").strip()
+    if not query:
+        print("No search term provided.")
+        return
+    # Use run_command to capture output reliably
     if os.name == 'nt':
-        os.system(f"docker images | findstr {query}")
+        output = run_command(f"docker images | findstr {query}")
     else:
-        os.system(f"docker images | grep {query}")
+        output = run_command(f"docker images | grep {query}")
+    print(output)
 
 def search_dockerhub():
     print("\n===== Search Docker Hub =====")
     query = input("Enter image name to search: ").strip()
-    os.system(f"docker search {query}")
+    if query:
+        output = run_command(f"docker search {query}")
+        print(output)
+    else:
+        print("No search term provided.")
 
 def pull_image():
     print("\n===== Pull Image =====")
     image = input("Enter image to pull (e.g., nginx:latest): ").strip()
-    os.system(f"docker pull {image}")
+    if image:
+        output = run_command(f"docker pull {image}")
+        print(output)
+    else:
+        print("No image specified.")
