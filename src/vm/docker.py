@@ -10,6 +10,7 @@ def list_docker_images():
     res = subprocess.run("docker images", shell=True, capture_output=True, text=True)
     return res.stdout
 
+
 def create_dockerfile_logic(path, content):
     """Objective 2: Saves the Dockerfile to the specified path."""
     try:
