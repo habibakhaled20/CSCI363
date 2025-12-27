@@ -61,3 +61,28 @@ def pull_image_logic(img):
             return f"PULL ERROR:\n{res.stderr}"
     except Exception as e:
         return f"System Error: {str(e)}"
+
+
+def search_local_images_logic(query):
+    """Search local docker images by name or tag.
+
+    Returns matching lines from `docker images` output or a helpful message when
+    nothing matches.
+    """
+    try:
+        # Use a predictable format to make filtering easier. Call docker with
+        # an argv list to avoid shell quoting differences on Windows (cmd
+        # doesn't treat single quotes as string delimiters, which caused the
+        # earlier error about too many arguments).
+        res = subprocess.run([
+            "docker", "images", "--format", "{{.Repository}}:{{.Tag}} {{.ID}} {{.Size}}"
+        ], capture_output=True, text=True)
+        if res.returncode != 0:
+            return f"ERROR listing images:\n{res.stderr}"
+
+        lines = [l for l in res.stdout.splitlines() if query.lower() in l.lower()]
+        if not lines:
+            return f"No local images found matching '{query}'."
+        return "\n".join(lines)
+    except Exception as e:
+        return f"System Error: {str(e)}"

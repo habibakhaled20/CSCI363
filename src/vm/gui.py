@@ -26,6 +26,7 @@ class CloudManagerGUI:
         self.add_btn(btn_frame, "List Running Containers", self.gui_list_containers, 2, 1)
         self.add_btn(btn_frame, "Stop Container", self.gui_stop_container, 3, 0)
         self.add_btn(btn_frame, "Search DockerHub", self.gui_search_hub, 3, 1)
+        self.add_btn(btn_frame, "Search Image", self.gui_search_image, 3, 2)
         self.add_btn(btn_frame, "Pull Image", self.gui_pull_image, 4, 0)
         self.add_btn(btn_frame, "Run New Container", self.gui_run_container, 4, 1)
 
@@ -154,6 +155,12 @@ class CloudManagerGUI:
     def gui_search_hub(self):
         q = simpledialog.askstring("Input", "Search term:", parent=self.root)
         if q: self.log(docker.search_hub_logic(q))
+
+    def gui_search_image(self):
+        q = simpledialog.askstring("Input", "Enter image name or tag to search locally:", parent=self.root)
+        if q:
+            self.log(f"\n--- Local Image Search: {q} ---\n")
+            self.log(docker.search_local_images_logic(q))
 
     def gui_pull_image(self):
         img = simpledialog.askstring("Input", "Image to pull (e.g., nginx):", parent=self.root)
