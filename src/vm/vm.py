@@ -13,5 +13,5 @@ def launch_vm_logic(name, cpu, ram, disk, iso):
     if iso:
         cmd += ["-cdrom", iso.replace("\\", "/"), "-boot", "order=d"]
     
-    subprocess.Popen(cmd) # Background process
+    subprocess.Popen(cmd) 
     return f"VM '{name}' launched successfully."

@@ -2,8 +2,8 @@ import tkinter as tk
 from tkinter import messagebox, filedialog, scrolledtext, simpledialog
 import json
 import os
-import vm      # Logic for Member 1
-import docker  # Logic for Member 2 & 3
+import vm      
+import docker  
 
 class CloudManagerGUI:
     def __init__(self, root):
@@ -123,7 +123,7 @@ class CloudManagerGUI:
         if tag:
             self.log(f"Building {tag}... Please wait.")
             status = docker.build_image_logic(tag)
-            self.log(status) # Shows success message on black screen
+            self.log(status) 
 
     def gui_run_container(self):
         tag = simpledialog.askstring("Input", "Enter Image Name to Run:", parent=self.root)
@@ -166,7 +166,6 @@ class CloudManagerGUI:
         img = simpledialog.askstring("Input", "Image to pull (e.g., nginx):", parent=self.root)
         if img:
             self.log(f"Pulling {img} from DockerHub...")
-            # This now captures the text and puts it on your black screen
             status = docker.pull_image_logic(img)
             self.log(status)
 

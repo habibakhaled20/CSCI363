@@ -1,8 +1,3 @@
-# src/vm/main.py
-# main.py - top lines
-# main.py
-# main.py - Updated with graceful exit on Ctrl+C
-
 from vm import create_vm
 from docker import (
     create_dockerfile,
